@@ -1,27 +1,18 @@
-This is all jargon that can be deleted at any time
+# CMPM 120 Spring 2022
+Endless Runner Assignment
 
-//Holding this 
-If using the gravity idea,
-we will need to use the  Phaser matter physics, as it add friction air resistance and gravity
+---------------------------------
 
-//General high level structuring 
+Collaborators: Skyler Haataja, Marlene Lopez, Daniel Wild
+Game Title: Slug Fall
+Date Completed: 02 May 2022
 
-for the generation of the runners world it seems like an obvious option would 
-be to build objects ahead of the camera, and delete objects as they leave the camera
+Link to GitHub repository:
+Playable link on GitHub pages:
 
-obstacle creation can be done in the same loop (most likely the main play scene)
+---------------------------------
 
-scaling of difficulty/ other variables may be tied to speed/time passed,
-with (switch statements?) controlling functions responsible for game parts. 
-
-one thing to consider is the variance that comes with the ability to speed up
-and slow down. 
-
-There seems to be a lot of camera controls 
-I think that a "factory" might be the best way to generate the map
-Another strategy might be to have a few tile maps that are prebuilt 
-that we  generate, but I think that it might be more hassle that I think
-
-"tumble"
-
-
+<Creative Tilt Justification>
+Does your game...
+...do something technically interesting? Are you particularly proud of a programming technique you implemented? Did you look beyond the class examples and learn how to do something new? (5)
+...have a great visual style? Does it use music or art that you're particularly proud of? Are you trying something new or clever with the endless runner form? (5)

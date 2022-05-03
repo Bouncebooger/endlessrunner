@@ -15,6 +15,7 @@ class Play extends Phaser.Scene {
         this.load.image('bg', 'assets/bg.png');
         this.load.image('slug', 'assets/Slug.png');
         this.load.image('leaf', 'assets/leaf.png');
+        this.load.multiatlas('anims', 'assets/anims.json', 'assets');
     }
     
     create(){
@@ -47,7 +48,7 @@ class Play extends Phaser.Scene {
         //platform
         this.plat = this.matter.add.image(200, 500, 'platA', null, {isStatic: true}).setScale(1,.75); 
 
-        this.leaf = this.matter.add.image(400, 500, 'leaf', null, {isStatic: true});
+        this.leaf = this.matter.add.sprite(400, 500, 'anims', 'leaf_slidon-0.png', {isStatic: true});
         //this.plat = this.matter.add.image(400, 500, 'leaf', null, {isStatic: true});
         this.plat.setAngle(20)
         this.score = this.add.text(game.canvas.width/2, game.canvas.height/4, this.points, null);
@@ -64,13 +65,7 @@ class Play extends Phaser.Scene {
         //console.log(this.player.body.velocity.y);
         
         this.points += this.player.body.velocity.y/100;
-        
 
-        
-        
-
-        
-        
         if(!this.matter.overlap(this.plat.body, this.player.body)||this.plat.y<this.player.y){
             if (this.plat.y < -100){
                 this.destroyPlatform();
@@ -100,11 +95,14 @@ class Play extends Phaser.Scene {
         }
         if(this.matter.overlap(this.leaf.body, this.player.body)){
             this.player.setVelocityY(-5);
-            if(this.player.x < this.leaf.x)
-                this.leaf.x += 80;
-            else{
-                this.leaf.x -= 80;
-            }
+            var frameNames = this.anims.generateFrameNames('anims', {
+                start: 1, end: 8, zeroPad: 1,
+                prefix: 'leaf_slidon-', suffix: '.png'
+            })
+            this.anims.create({ key: 'hit', frames: frameNames, frameRate: 5, repeat:-1 });
+            this.leaf.anims.play('hit');
+
+            
         }
         
         if(keyLEFT.isDown){
@@ -155,7 +153,7 @@ class Play extends Phaser.Scene {
     }
     destroyLeaf(){
         this.leaf.destroy();
-        this.leaf = this.matter.add.sprite(Phaser.Math.Between(150, game.canvas.width-250), game.canvas.height + Phaser.Math.Between(0,200), 'leaf', null, {isStatic: true});
+        this.leaf = this.matter.add.sprite(Phaser.Math.Between(150, game.canvas.width-250), game.canvas.height + Phaser.Math.Between(0,200), 'anims', 'leaf_slidon-0.png', {isStatic: true});
         this.leaf.setAngle(Phaser.Math.Between(-45,45));
     }
 }

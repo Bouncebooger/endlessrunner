@@ -17,5 +17,6 @@ class Predator extends Phaser.Physics.Matter.Sprite {
         if(this.chase>10 && this.y>50){
            this.y-= 5;
         }
+      
     }
 }

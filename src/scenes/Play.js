@@ -22,8 +22,9 @@ class Play extends Phaser.Scene {
         //Global variables
         //this.globalclock = new Clock("playScene");
         this.bruh;
+        this.webst;
         this.speed = 0;
-     //   this.
+     //  this.wideweb = this.add.group();
         this.points = 0;
         var shapes = this.cache.json.get('shapes');
         //keyboard input
@@ -32,7 +33,8 @@ class Play extends Phaser.Scene {
        
 
         this.background = this.add.tileSprite(0, 0, 300, 256, 'bg').setOrigin(0,0).setScale(3,3.6);
-        this.eventimer  =this.time.addEvent({delay:3000,callback: this.spawnbird,callbackScope:this});
+        this.eventimer  =this.time.addEvent({delay:40000,callback: this.spawnbird,callbackScope:this});
+        this.webber = this.time.addEvent({delay:1000,callback:this.spiderspawn,callbackScope:this});
         // walls that imitate movement with player
         this.WoodL = this.add.tileSprite(0, 0, 250, 1800, 'Left_Wall').setOrigin(0,0);
         this.WoodR = this.add.tileSprite(game.canvas.width, 0, 250, 1800, 'Right_Wall').setOrigin(0,0);
@@ -51,7 +53,7 @@ class Play extends Phaser.Scene {
         //this.plat = this.matter.add.image(400, 500, 'leaf', null, {isStatic: true});
         this.plat.setAngle(20)
         this.score = this.add.text(game.canvas.width/2, game.canvas.height/4, this.points, null);
-        
+        this.player.setCollisionGroup(30).setCollidesWith(17);
         this.player.body.sleepThreshold = -1;
        
     }
@@ -60,6 +62,7 @@ class Play extends Phaser.Scene {
       
         this.speed = this.player.body.velocity.y;
         this.Warner.update();
+        
         //this.P1.update();
         //console.log(this.player.body.velocity.y);
         
@@ -68,7 +71,7 @@ class Play extends Phaser.Scene {
 
         
         
-
+        
         
         
         if(!this.matter.overlap(this.plat.body, this.player.body)||this.plat.y<this.player.y){
@@ -114,14 +117,28 @@ class Play extends Phaser.Scene {
             this.player.setVelocityX(6);
         }
         console.log(this.player.body.velocity.y)
-    if(this.eventimer.hasDispatched) {
-        console.log(this.eventimer.hasDispatched);
+    if(this.eventimer.hasDispatched ) {
+        //console.log(this.eventimer.hasDispatched);
         this.bruh.update();
         if(this.matter.overlap(this.bruh.body,this.player.body)){
+            this.webst = null;
             this.scene.start('menuScene');
         }
     }
+    if(this.webst){
+         this.webst.update();
+         if(this.matter.overlap(this.webst.body,this.player.body)){
+            this.player.setVelocityY(5);
+        }
+  
+    if(this.webst.y<10){
+        this.webst.destroy();
+        this.spiderspawn();
+    }
+
+    }
         if(this.player.body.velocity.y >= 24 && this.matter.overlap(this.plat.body, this.player.body)){
+            this.webst= null;
             this.scene.start('menuScene');
         }
         
@@ -148,6 +165,25 @@ class Play extends Phaser.Scene {
 
     }
 
+    spiderspawn(){
+        this.lor = Phaser.Math.Between(1,2);
+        if(this.lor == 1){
+        this.webst = new spiderweb(this,0,game.canvas.height,'leaf').setIgnoreGravity(true).setDepth(0);
+
+        }
+        else{
+            this.webst = new spiderweb(this,game.canvas.width,game.canvas.height,'leaf',null).setIgnoreGravity(true).setDepth(0);
+            
+        }
+        this.webst.setCollisionCategory(12).setCollidesWith(27);
+        //this.webst.setStatic(true);
+        //this.webst.body.sleepThreshold = -1;
+        
+      
+    }
+
+
+ 
     destroyPlatform(){
         this.plat.destroy();
         this.plat = this.matter.add.sprite(Phaser.Math.Between(150, game.canvas.width-250), game.canvas.height + Phaser.Math.Between(0,20), 'platA', null, {isStatic: true}).setScale(1,.75);

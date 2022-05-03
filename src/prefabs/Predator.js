@@ -8,8 +8,8 @@ class Predator extends Phaser.Physics.Matter.Sprite {
     
     update(){
         this.chase = this.scene.speed;
-        console.log("how");
-        console.log(this.speedt);
+       // console.log("how");
+      //  console.log(this.speedt);
         
         if(this.chase<8 && this.y <400){ 
         this.y +=  2;

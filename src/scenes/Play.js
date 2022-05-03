@@ -22,10 +22,10 @@ class Play extends Phaser.Scene {
         //this.globalclock = new Clock("playScene");
         //Global variables
         //this.globalclock = new Clock("playScene");
-        this.bruh;
+        this.bird;
         this.webst;
         this.speed = 0;
-     //  this.wideweb = this.add.group();
+        this.wideweb = this.add.group();
         this.points = 0;
         var shapes = this.cache.json.get('shapes');
         //keyboard input
@@ -34,8 +34,11 @@ class Play extends Phaser.Scene {
        
 
         this.background = this.add.tileSprite(0, 0, 300, 256, 'bg').setOrigin(0,0).setScale(3,3.6);
-        this.eventimer  =this.time.addEvent({delay:40000,callback: this.spawnbird,callbackScope:this});
+        this.eventimer  = this.time.addEvent({delay:1000,callback: this.spawnbird,callbackScope:this});
+
         this.webber = this.time.addEvent({delay:1000,callback:this.spiderspawn,callbackScope:this});
+
+
         // walls that imitate movement with player
         this.WoodL = this.add.tileSprite(0, 0, 250, 1800, 'Left_Wall').setOrigin(0,0);
         this.WoodR = this.add.tileSprite(game.canvas.width, 0, 250, 1800, 'Right_Wall').setOrigin(0,0);
@@ -69,14 +72,6 @@ class Play extends Phaser.Scene {
         
         this.points += this.player.body.velocity.y/100;
 
-<<<<<<< HEAD
-=======
-        
-        
-        
-        
-        
->>>>>>> 4946d3db41a67d998153353ceff7fb46aae35338
         if(!this.matter.overlap(this.plat.body, this.player.body)||this.plat.y<this.player.y){
             if (this.plat.y < -100){
                 this.destroyPlatform();
@@ -110,7 +105,7 @@ class Play extends Phaser.Scene {
                 start: 1, end: 8, zeroPad: 1,
                 prefix: 'leaf_slidon-', suffix: '.png'
             })
-            this.anims.create({ key: 'hit', frames: frameNames, frameRate: 5, repeat:-1 });
+            this.anims.create({ key: 'hit', frames: frameNames, frameRate: 5, repeat:0 });
             this.leaf.anims.play('hit');
 
             
@@ -125,8 +120,8 @@ class Play extends Phaser.Scene {
         console.log(this.player.body.velocity.y)
     if(this.eventimer.hasDispatched ) {
         //console.log(this.eventimer.hasDispatched);
-        this.bruh.update();
-        if(this.matter.overlap(this.bruh.body,this.player.body)){
+        this.bird.update();
+        if(this.matter.overlap(this.bird.body,this.player.body)){
             this.webst = null;
             this.scene.start('menuScene');
         }
@@ -162,11 +157,17 @@ class Play extends Phaser.Scene {
     }
     
     spawnbird(){
-        console.log("amngus us");
-        this.bruh = new Predator(this,game.canvas.width/2,50,'slug',null,this.speed);
-        this.bruh.setIgnoreGravity(true);
-        this.bruh.body.sleepThreshold = -1;
-        this.bruh.setDepth(0).setCollisionCategory(1).setCollidesWith(2);
+        this.bird = new Predator(this,game.canvas.width/2,50,'anims','bird_sheet-0.png',this.speed).setScale(2,2);
+        this.plat.setAngle(Phaser.Math.Between(-15,15));
+        this.bird.setIgnoreGravity(true);
+        this.bird.body.sleepThreshold = -1;
+        this.bird.setDepth(0).setCollisionCategory(1).setCollidesWith(2);
+        var frameNames = this.anims.generateFrameNames('anims', {
+            start: 1, end: 4, zeroPad: 0,
+            prefix: 'bird_sheet-', suffix: '.png'
+        })
+        this.anims.create({ key: 'fly', frames: frameNames, frameRate: 4, repeat:-1 });
+        this.bird.play('fly');
 
 
     }
@@ -174,8 +175,7 @@ class Play extends Phaser.Scene {
     spiderspawn(){
         this.lor = Phaser.Math.Between(1,2);
         if(this.lor == 1){
-        this.webst = new spiderweb(this,0,game.canvas.height,'leaf').setIgnoreGravity(true).setDepth(0);
-
+            this.webst = new spiderweb(this, 0,game.canvas.height,'leaf').setIgnoreGravity(true).setDepth(0);
         }
         else{
             this.webst = new spiderweb(this,game.canvas.width,game.canvas.height,'leaf',null).setIgnoreGravity(true).setDepth(0);

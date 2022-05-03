@@ -334,25 +334,26 @@
 						"y": 0.5
 					}
 				},
+				
 				{
 					"filename": "leaf_slidon-0.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 130,
-						"h": 265
+						"w": 120,
+						"h": 75
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 130,
-						"h": 265
+						"w": 120,
+						"h": 75
 					},
 					"frame": {
 						"x": 0,
 						"y": 450,
 						"w": 130,
-						"h": 265
+						"h": 120
 					},
 					"anchor": {
 						"x": 0.5,
@@ -526,6 +527,31 @@
 					"frame": {
 						"x": 130,
 						"y": 980,
+						"w": 130,
+						"h": 265
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.25
+					}
+				},
+				{
+					"filename": "leaf_slidon-8.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 130,
+						"h": 265
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 130,
+						"h": 265
+					},
+					"frame": {
+						"x": 0,
+						"y": 450,
 						"w": 130,
 						"h": 265
 					},

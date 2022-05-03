@@ -18,18 +18,21 @@ class Play extends Phaser.Scene {
     }
     
     create(){
+        //this.globalclock = new Clock("playScene");
         //Global variables
+        //this.globalclock = new Clock("playScene");
+        this.bruh;
         this.speed = 0;
+     //   this.
         this.points = 0;
         var shapes = this.cache.json.get('shapes');
         //keyboard input
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-        this.bruh = new Predator(this,game.canvas.width/2,50,'slug')
-        this.bruh.setIgnoreGravity(true);
+       
 
         this.background = this.add.tileSprite(0, 0, 300, 256, 'bg').setOrigin(0,0).setScale(3,3.6);
-        
+        this.eventimer  =this.time.addEvent({delay:3000,callback: this.spawnbird,callbackScope:this});
         // walls that imitate movement with player
         this.WoodL = this.add.tileSprite(0, 0, 250, 1800, 'Left_Wall').setOrigin(0,0);
         this.WoodR = this.add.tileSprite(game.canvas.width, 0, 250, 1800, 'Right_Wall').setOrigin(0,0);
@@ -38,6 +41,7 @@ class Play extends Phaser.Scene {
         
         // player
         this.player = this.matter.add.sprite(game.canvas.width/2, 0, 'slug', null, 'shapes');
+        
         this.Warner = new velbar(this,0,0,'slug').setOrigin(0,0);
         
         //platform
@@ -49,11 +53,12 @@ class Play extends Phaser.Scene {
         this.score = this.add.text(game.canvas.width/2, game.canvas.height/4, this.points, null);
         
         this.player.body.sleepThreshold = -1;
+       
     }
 
     update(){
       
-        this.bruh.update();
+        this.speed = this.player.body.velocity.y;
         this.Warner.update();
         //this.P1.update();
         //console.log(this.player.body.velocity.y);
@@ -109,6 +114,13 @@ class Play extends Phaser.Scene {
             this.player.setVelocityX(6);
         }
         console.log(this.player.body.velocity.y)
+    if(this.eventimer.hasDispatched) {
+        console.log(this.eventimer.hasDispatched);
+        this.bruh.update();
+        if(this.matter.overlap(this.bruh.body,this.player.body)){
+            this.scene.start('menuScene');
+        }
+    }
         if(this.player.body.velocity.y >= 24 && this.matter.overlap(this.plat.body, this.player.body)){
             this.scene.start('menuScene');
         }
@@ -118,12 +130,22 @@ class Play extends Phaser.Scene {
         if(this.player.y >= 400){
             this.player.y = 399;
         }
-        this.Warner.update();
+        
 
         if(this.points>this.score.text){
             this.score.text=Math.round(this.points);
         }
         
+    }
+    
+    spawnbird(){
+        console.log("amngus us");
+        this.bruh = new Predator(this,game.canvas.width/2,50,'slug',null,this.speed);
+        this.bruh.setIgnoreGravity(true);
+        this.bruh.body.sleepThreshold = -1;
+        this.bruh.setDepth(0).setCollisionCategory(1).setCollidesWith(2);
+
+
     }
 
     destroyPlatform(){

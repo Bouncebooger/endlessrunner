@@ -7,7 +7,7 @@ class velbar extends Phaser.GameObjects.Sprite {
 update(){
   switch(true){
    case (this.scene.player.body.velocity.y<=8):
-       console.log("verysafe" );
+     //  console.log("verysafe" );
        break;u
    case (this.scene.player.body.velocity.y<=15):
         console.log("optimal"); 

@@ -15,30 +15,26 @@ class Play extends Phaser.Scene {
         this.load.image('bg', 'assets/bg.png');
         this.load.image('slug', 'assets/Slug.png');
         this.load.image('leaf', 'assets/leaf.png');
-        this.load.multiatlas('anims', 'assets/anims.json', 'assets');
     }
     
     create(){
         //this.globalclock = new Clock("playScene");
         //Global variables
         //this.globalclock = new Clock("playScene");
-        this.bird;
+        this.bruh;
         this.webst;
         this.speed = 0;
-        this.wideweb = this.add.group();
+     //  this.wideweb = this.add.group();
         this.points = 0;
         var shapes = this.cache.json.get('shapes');
         //keyboard input
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-       
+        keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
         this.background = this.add.tileSprite(0, 0, 300, 256, 'bg').setOrigin(0,0).setScale(3,3.6);
-        this.eventimer  = this.time.addEvent({delay:1000,callback: this.spawnbird,callbackScope:this});
-
+        this.eventimer  =this.time.addEvent({delay:40000,callback: this.spawnbird,callbackScope:this});
         this.webber = this.time.addEvent({delay:1000,callback:this.spiderspawn,callbackScope:this});
-
-
         // walls that imitate movement with player
         this.WoodL = this.add.tileSprite(0, 0, 250, 1800, 'Left_Wall').setOrigin(0,0);
         this.WoodR = this.add.tileSprite(game.canvas.width, 0, 250, 1800, 'Right_Wall').setOrigin(0,0);
@@ -53,7 +49,7 @@ class Play extends Phaser.Scene {
         //platform
         this.plat = this.matter.add.image(200, 500, 'platA', null, {isStatic: true}).setScale(1,.75); 
 
-        this.leaf = this.matter.add.sprite(400, 500, 'anims', 'leaf_slidon-0.png', {isStatic: true});
+        this.leaf = this.matter.add.image(400, 500, 'leaf', null, {isStatic: true});
         //this.plat = this.matter.add.image(400, 500, 'leaf', null, {isStatic: true});
         this.plat.setAngle(20)
         this.score = this.add.text(game.canvas.width/2, game.canvas.height/4, this.points, null);
@@ -63,7 +59,23 @@ class Play extends Phaser.Scene {
     }
 
     update(){
-      
+         
+        
+        if(Phaser.Input.Keyboard.JustDown(keyESC)){
+            console.log("pausaed");
+            
+            this.scene.launch('PauseScreen');
+            console.log("sus");
+            //
+            this.scene.pause();
+            //this.scene.destroy('PauseScreen');
+           // this.matter.world.resume();
+            
+            
+        }
+        //this.scene.destroy('PauseScreen');
+        console.log("we are back");
+        
         this.speed = this.player.body.velocity.y;
         this.Warner.update();
         
@@ -71,7 +83,13 @@ class Play extends Phaser.Scene {
         //console.log(this.player.body.velocity.y);
         
         this.points += this.player.body.velocity.y/100;
+        
 
+        
+        
+        
+        
+        
         if(!this.matter.overlap(this.plat.body, this.player.body)||this.plat.y<this.player.y){
             if (this.plat.y < -100){
                 this.destroyPlatform();
@@ -101,14 +119,11 @@ class Play extends Phaser.Scene {
         }
         if(this.matter.overlap(this.leaf.body, this.player.body)){
             this.player.setVelocityY(-5);
-            var frameNames = this.anims.generateFrameNames('anims', {
-                start: 1, end: 8, zeroPad: 1,
-                prefix: 'leaf_slidon-', suffix: '.png'
-            })
-            this.anims.create({ key: 'hit', frames: frameNames, frameRate: 5, repeat:0 });
-            this.leaf.anims.play('hit');
-
-            
+            if(this.player.x < this.leaf.x)
+                this.leaf.x += 80;
+            else{
+                this.leaf.x -= 80;
+            }
         }
         
         if(keyLEFT.isDown){
@@ -120,8 +135,8 @@ class Play extends Phaser.Scene {
         console.log(this.player.body.velocity.y)
     if(this.eventimer.hasDispatched ) {
         //console.log(this.eventimer.hasDispatched);
-        this.bird.update();
-        if(this.matter.overlap(this.bird.body,this.player.body)){
+        this.bruh.update();
+        if(this.matter.overlap(this.bruh.body,this.player.body)){
             this.webst = null;
             this.scene.start('menuScene');
         }
@@ -132,7 +147,7 @@ class Play extends Phaser.Scene {
             this.player.setVelocityY(5);
         }
   
-    if(this.webst.y<10){
+    if(this.webst.y<10 ){
         this.webst.destroy();
         this.spiderspawn();
     }
@@ -157,17 +172,11 @@ class Play extends Phaser.Scene {
     }
     
     spawnbird(){
-        this.bird = new Predator(this,game.canvas.width/2,50,'anims','bird_sheet-0.png',this.speed).setScale(2,2);
-        this.plat.setAngle(Phaser.Math.Between(-15,15));
-        this.bird.setIgnoreGravity(true);
-        this.bird.body.sleepThreshold = -1;
-        this.bird.setDepth(0).setCollisionCategory(1).setCollidesWith(2);
-        var frameNames = this.anims.generateFrameNames('anims', {
-            start: 1, end: 4, zeroPad: 0,
-            prefix: 'bird_sheet-', suffix: '.png'
-        })
-        this.anims.create({ key: 'fly', frames: frameNames, frameRate: 4, repeat:-1 });
-        this.bird.play('fly');
+        console.log("amngus us");
+        this.bruh = new Predator(this,game.canvas.width/2,50,'slug',null,this.speed);
+        this.bruh.setIgnoreGravity(true);
+        this.bruh.body.sleepThreshold = -1;
+        this.bruh.setDepth(0).setCollisionCategory(1).setCollidesWith(2);
 
 
     }
@@ -175,7 +184,8 @@ class Play extends Phaser.Scene {
     spiderspawn(){
         this.lor = Phaser.Math.Between(1,2);
         if(this.lor == 1){
-            this.webst = new spiderweb(this, 0,game.canvas.height,'leaf').setIgnoreGravity(true).setDepth(0);
+        this.webst = new spiderweb(this,0,game.canvas.height,'leaf').setIgnoreGravity(true).setDepth(0);
+
         }
         else{
             this.webst = new spiderweb(this,game.canvas.width,game.canvas.height,'leaf',null).setIgnoreGravity(true).setDepth(0);
@@ -197,7 +207,7 @@ class Play extends Phaser.Scene {
     }
     destroyLeaf(){
         this.leaf.destroy();
-        this.leaf = this.matter.add.sprite(Phaser.Math.Between(150, game.canvas.width-250), game.canvas.height + Phaser.Math.Between(0,200), 'anims', 'leaf_slidon-0.png', {isStatic: true});
+        this.leaf = this.matter.add.sprite(Phaser.Math.Between(150, game.canvas.width-250), game.canvas.height + Phaser.Math.Between(0,200), 'leaf', null, {isStatic: true});
         this.leaf.setAngle(Phaser.Math.Between(-45,45));
     }
 }

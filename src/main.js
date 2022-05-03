@@ -2,7 +2,7 @@ let config = {
     type: Phaser.CANVAS,
      width: 900,
     height: 900,
-  scene: [Menu, Play],
+  scene: [Menu, Play,Pause],
   physics: {
       default: 'matter',
       matter: {
@@ -27,6 +27,6 @@ let config = {
   //let keyF,keyR,keyLEFT,keyRIGHT;
   let borderUISize = game.config.height / 15;
   let borderPadding = borderUISize /3 ;
-  let keyDOWN,keyUP,keyLEFT,keyRIGHT;
+  let keyDOWN,keyUP,keyLEFT,keyRIGHT,keyESC;
   let player;
   

@@ -8,6 +8,7 @@ class Pause extends Phaser.Scene {
     }
 
     create(){
+        
         this.start = false;
         this.exit = false;
         // KB input

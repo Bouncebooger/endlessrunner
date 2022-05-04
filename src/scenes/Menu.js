@@ -5,6 +5,11 @@ class Menu extends Phaser.Scene {
          frameHeight: 71
          });
       this.load.image('bg', 'assets/bg.png');
+      this.load.audio('sfx_bird','assets/bird.wav');
+      this.load.audio('sfx_bybird','assets/deathbybird.wav');
+      this.load.audio('sfx_thud','assets/landingthud.wav');
+      this.load.audio('sfx_splat','assets/splat02.wav');
+      this.load.audio('slugfallost','assets/SlugFallOST.wav');
    }
    constructor() {
       super("menuScene");

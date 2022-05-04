@@ -25,12 +25,16 @@ class Play extends Phaser.Scene {
         this.test = false;
         this.test2 = false;
         this.isDead = false;
+        this.lhc = false;
+        
         //this.globalclock = new Clock("playScene");
         //Global variables
         //this.globalclock = new Clock("playScene");
         this.bird;
         this.webst;
      //  this.wideweb = this.add.group();
+         this.bgm =this.sound.add('slugfallost',{loop: true, volume:0.2});
+         this.bgm.play();
         this.points = 0;
         var shapes = this.cache.json.get('shapes');
         //keyboard input
@@ -99,7 +103,16 @@ update(){
         //this.P1.update();
         //console.log(this.player.body.velocity.y);
         this.points += (this.player.body.velocity.y/100)*(this.Warner.thisFrame+1);     
-                
+        if(this.player.body.velocity.y>3){
+            this.lhc =true;
+        }
+        else{
+            if(this.lhc){
+            this.sound.play('sfx_thud');
+            this.lhc = false;
+            }
+        }
+
         if(!this.matter.overlap(this.plat.body, this.player.body)||this.plat.y<this.player.y){
             if (this.plat.y < -100){
                 this.destroyPlatform();
@@ -125,6 +138,7 @@ update(){
             this.WoodR.tilePositionY += this.player.body.velocity.y;
         }
         else{
+            
             this.leaf.y += 1;
         }
         if(this.matter.overlap(this.leaf.body, this.player.body)){
@@ -164,7 +178,8 @@ update(){
                 this.player.anims.play('meal'); 
                 this.isDead = true;
                 this.player.setStatic(true);
-                //add bird eat sfx
+                this.bgm.stop();
+                this.sound.play('sfx_bybird',{volume:0.8});
             }
         }
 
@@ -203,7 +218,8 @@ update(){
             this.player.setStatic(true);
             this.player.rotation = this.plat.rotation;
             this.player.y += 20;
-            //add smush sfx
+            this.bgm.stop();
+            this.sound.play('sfx_splat');
         }
         
         // console.log(this.player.body.velocity.y)
@@ -240,6 +256,7 @@ update(){
         })
         this.anims.create({ key: 'fly', frames: frameNames, frameRate: 4, repeat:-1 });
         this.bird.play('fly');
+        this.sound.play('sfx_bird');
 
 
     }

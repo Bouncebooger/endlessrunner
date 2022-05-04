@@ -4,7 +4,6 @@ class Play extends Phaser.Scene {
     constructor () {
         super("playScene");
         this.speed = 0;
-        this.barFrame = 1;
     }
     preload(){
         //this.matter.world.setBounds(true,true,false,false);
@@ -22,6 +21,10 @@ class Play extends Phaser.Scene {
     }
     
     create(){
+        this.dead = false;
+        this.test = false;
+        this.test2 = false;
+        this.isDead = false;
         //this.globalclock = new Clock("playScene");
         //Global variables
         //this.globalclock = new Clock("playScene");
@@ -48,7 +51,7 @@ class Play extends Phaser.Scene {
         // player
         this.player = this.matter.add.sprite(game.canvas.width/2, 0, 'slug', null, 'shapes');
         
-        this.Warner = new velbar(this,0,0,'bar', 0).setOrigin(0,0);
+        this.Warner = new velbar(this,30,30,'bar', 0).setOrigin(0,0);
         
         //platform
         this.plat = this.matter.add.image(200, 500, 'platA', null, {isStatic: true}).setScale(1,.75); 
@@ -76,14 +79,14 @@ class Play extends Phaser.Scene {
         })
     }
 
-    update(){
-         
+update(){
+    if(!this.isDead){
         //console.log(this.barFrame);
         if(Phaser.Input.Keyboard.JustDown(keyESC)){
             this.scene.launch('PauseScreen');
             this.scene.pause();
             //this.scene.destroy('PauseScreen');
-           // this.matter.world.resume();
+        // this.matter.world.resume();
             
             
         }
@@ -95,8 +98,8 @@ class Play extends Phaser.Scene {
         
         //this.P1.update();
         //console.log(this.player.body.velocity.y);
-        this.points += this.player.body.velocity.y/100;     
-                   
+        this.points += (this.player.body.velocity.y/100)*(this.Warner.thisFrame+1);     
+                
         if(!this.matter.overlap(this.plat.body, this.player.body)||this.plat.y<this.player.y){
             if (this.plat.y < -100){
                 this.destroyPlatform();
@@ -149,51 +152,80 @@ class Play extends Phaser.Scene {
         }
         //this.player.body.velocity.y
         
-    if(this.eventimer.hasDispatched ) {
-        //console.log(this.eventimer.hasDispatched);
-        this.bird.update();
-        if(this.matter.overlap(this.bird.body,this.player.body)){
-            this.webst = null;
-            this.scene.start('menuScene');
-        }
-    }
-
-    if(this.webst){
-        this.webst.update();
-        if(this.matter.overlap(this.webst.body,this.player.body)){
-            this.player.setVelocityY(5);
-            if(!this.webst.breaking){
+        if(this.eventimer.hasDispatched ) {
+            //console.log(this.eventimer.hasDispatched);
+            this.bird.update();
+            if(this.matter.overlap(this.bird.body,this.player.body)){
                 var frameNames = this.anims.generateFrameNames('anims', {
-                    start: 1, end: 8, zeroPad: 1,
-                    prefix: 'break_sheet-', suffix: '.png'
-                })
-                this.anims.create({ key: 'break', frames: frameNames, frameRate: 8, repeat:0 });
-                this.webst.anims.play('break');
-                this.webst.breaking = true;
+                    start: 0, end: 5, zeroPad: 1,
+                    prefix: 'meal_sheet-', suffix: '.png'
+                });
+                this.anims.create({ key: 'meal', frames: frameNames, frameRate: 5, repeat:0 });
+                this.player.anims.play('meal'); 
+                this.isDead = true;
+                this.player.setStatic(true);
+                //add bird eat sfx
             }
         }
-        if(this.webst.breaking && !this.webst.anims.isPlaying){
-            this.webst.x = -200;
+
+        if(this.webst){
+            this.webst.update();
+            if(this.matter.overlap(this.webst.body,this.player.body)){
+                this.player.setVelocityY(5);
+                if(!this.webst.breaking){
+                    var frameNames = this.anims.generateFrameNames('anims', {
+                        start: 1, end: 8, zeroPad: 1,
+                        prefix: 'break_sheet-', suffix: '.png'
+                    })
+                    this.anims.create({ key: 'break', frames: frameNames, frameRate: 8, repeat:0 });
+                    this.webst.anims.play('break');
+                    this.webst.breaking = true;
+                }
+            }
+            if(this.webst.breaking && !this.webst.anims.isPlaying){
+                this.webst.x = -200;
+            }
+            if(this.webst.y<-200){
+                this.webst.destroy();
+                this.spiderspawn();
+            }
+
         }
-        if(this.webst.y<-200){
-            this.webst.destroy();
-            this.spiderspawn();
+
+        if(this.player.body.velocity.y >= 22 && this.matter.overlap(this.plat.body, this.player.body)){
+            var frameNames = this.anims.generateFrameNames('anims', {
+                start: 0, end: 4, zeroPad: 1,
+                prefix: 'splat_sheet-', suffix: '.png'
+            });
+            this.anims.create({ key: 'bruh', frames: frameNames, frameRate: 5, repeat:0 });
+            this.player.anims.play('bruh'); 
+            this.isDead = true;
+            this.player.setStatic(true);
+            this.player.rotation = this.plat.rotation;
+            this.player.y += 20;
+            //add smush sfx
         }
-
-    }
-
-    
-    // console.log(this.player.body.velocity.y)
-    
-    if(this.player.y >= 400){
-        this.player.y = 399;
-    }
-    
-
-    if(this.points>this.score.text){
-        this.score.text=Math.round(this.points);
-    }
         
+        // console.log(this.player.body.velocity.y)
+        
+        if(this.player.y >= 400){
+            this.player.y = 399;
+        }
+        
+
+        if(this.points>this.score.text){
+            this.score.text=Math.round(this.points);
+        }
+    }
+
+    if(this.isDead){
+        
+        if(this.player.anims.isPlaying == false && this.test2 == false){
+            this.test2 = true;
+            this.scene.pause();
+            this.scene.launch('DeathFallScreen');
+        }
+    }
 }
     
     spawnbird(){

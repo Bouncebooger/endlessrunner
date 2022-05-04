@@ -47,7 +47,7 @@ class Menu extends Phaser.Scene {
 
       // game instructions 
       this.add.text(centerX, centerY + 2 * textSpacer, 'Move with the Arrow Keys (←)(→)', textConfig).setOrigin(0.5);
-      this.add.text(centerX, centerY + 3 * textSpacer, 'Press (Q) to Break Through Webs', textConfig).setOrigin(0.5);
+      this.add.text(centerX, centerY + 3 * textSpacer, 'Keep your Velocity Out of the Danger Zone', textConfig).setOrigin(0.5);
       // Goal
       textConfig.color = '#FFFF66';
       this.add.text(centerX, centerY + 4 * textSpacer, '>> Avoid the Bird <<', textConfig).setOrigin(0.5);

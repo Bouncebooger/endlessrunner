@@ -15,13 +15,14 @@ class Play extends Phaser.Scene {
         this.load.image('bg', 'assets/bg.png');
         this.load.image('slug', 'assets/Slug.png');
         this.load.image('leaf', 'assets/leaf.png');
+        this.load.multiatlas('anims', 'assets/anims.json', 'assets');
     }
     
     create(){
         //this.globalclock = new Clock("playScene");
         //Global variables
         //this.globalclock = new Clock("playScene");
-        this.bruh;
+        this.bird;
         this.webst;
         this.speed = 0;
      //  this.wideweb = this.add.group();
@@ -33,7 +34,7 @@ class Play extends Phaser.Scene {
         keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
         this.background = this.add.tileSprite(0, 0, 300, 256, 'bg').setOrigin(0,0).setScale(3,3.6);
-        this.eventimer  = this.time.addEvent({delay:40000,callback: this.spawnbird,callbackScope:this});
+        this.eventimer  = this.time.addEvent({delay:10000,callback: this.spawnbird,callbackScope:this});
 
         this.webber = this.time.addEvent({delay:1000,callback:this.spiderspawn,callbackScope:this});
         // walls that imitate movement with player
@@ -78,7 +79,7 @@ class Play extends Phaser.Scene {
         }
         //this.scene.destroy('PauseScreen');
         console.log("we are back");
-      //  keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+        
         this.speed = this.player.body.velocity.y;
         this.Warner.update();
         
@@ -147,8 +148,8 @@ class Play extends Phaser.Scene {
         
     if(this.eventimer.hasDispatched ) {
         //console.log(this.eventimer.hasDispatched);
-        this.bruh.update();
-        if(this.matter.overlap(this.bruh.body,this.player.body)){
+        this.bird.update();
+        if(this.matter.overlap(this.bird.body,this.player.body)){
             this.webst = null;
             this.scene.start('menuScene');
         }
@@ -200,7 +201,7 @@ class Play extends Phaser.Scene {
         this.bird = new Predator(this,game.canvas.width/2,50,'anims','bird_sheet-0.png',this.speed).setScale(2,2);
         this.plat.setAngle(Phaser.Math.Between(-15,15));
         this.bird.setIgnoreGravity(true);
-        this.bird.body.sleepThreshold = -1;
+        this.bird.body.sleepThreshold = -1; 
         this.bird.setDepth(0).setCollisionCategory(1).setCollidesWith(2);
         var frameNames = this.anims.generateFrameNames('anims', {
             start: 0, end: 3, zeroPad: 0,

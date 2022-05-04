@@ -104,17 +104,12 @@ update(){
         //this.P1.update();
         //console.log(this.player.body.velocity.y);
         this.points += (this.player.body.velocity.y/100)*(this.Warner.thisFrame+1);     
-        if(this.player.body.velocity.y>5){
-            this.lhc = true;
-        }
-        else{
-            if(this.lhc){
-            this.sound.play('sfx_thud');
-            this.lhc = false;
-            }
-        }
+        
 
         if(!this.matter.overlap(this.plat.body, this.player.body)||this.plat.y<this.player.y){
+            if(this.player.body.velocity.y>8){
+                this.lhc = true;
+            }
             if (this.plat.y < -100){
                 this.destroyPlatform();
             }
@@ -139,7 +134,10 @@ update(){
             this.WoodR.tilePositionY += this.player.body.velocity.y;
         }
         else{
-            
+            if(this.lhc == true){
+                this.sound.play('sfx_thud');
+                this.lhc = false;
+            }
             this.leaf.y += 1;
         }
         if(this.matter.overlap(this.leaf.body, this.player.body)){
@@ -156,6 +154,7 @@ update(){
             else{
                 this.leaf.x += 100;
             }
+            this.sound.play('sfx_leaf', {volume: 0.3});
             
         }
 

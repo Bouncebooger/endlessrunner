@@ -22,12 +22,13 @@ let config = {
     type: Phaser.CANVAS,
      width: 900,
     height: 900,
-  scene: [Menu, Play,Pause,DeathFall, Instruction],
+  scene: [Menu,Play,Pause,DeathFall,Instruction],
   physics: {
       default: 'matter',
       matter: {
             //gravity: {x: 0, y: 0},
             //debug: true,
+
             enableSleeping: true,
             setBounds: {
                 left: true,
@@ -37,7 +38,8 @@ let config = {
                
           }
       },
-    }
+    },
+    autoCenter: Phaser.Scale.Center,
   }
   let game = new Phaser.Game(config);
   //let keyF,keyR,keyLEFT,keyRIGHT;

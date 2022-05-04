@@ -2,9 +2,7 @@ class Instruction extends Phaser.Scene {
     preload(){
         this.load.image('menuButton', 'assets/buttons/menuButton.png');
         this.load.image('bg', 'assets/bg.png');
-        
-        
-        //this.load.image('instructionSheet', 'assets/instructionSheet.png');
+        this.load.image('instructionSheet', 'assets/instructionSheet.png');
     }
     constructor(){
        super("instructionScene");
@@ -19,6 +17,8 @@ class Instruction extends Phaser.Scene {
         // buttons
         this.menuButton = this.add.image(game.canvas.width/2, game.canvas.height-70, 'menuButton').setScale(1.5);
         this.menuButton.setInteractive();
+        // instruction page
+        this.add.image(game.canvas.width/2, game.canvas.height/2, 'instructionSheet').setScale(1.2);
     }
 
     update(){

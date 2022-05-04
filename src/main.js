@@ -27,6 +27,6 @@ let config = {
   //let keyF,keyR,keyLEFT,keyRIGHT;
   let borderUISize = game.config.height / 15;
   let borderPadding = borderUISize /3 ;
-  let keyDOWN,keyUP,keyLEFT,keyRIGHT,keyESC;
+  let keyDOWN,keyUP,keyLEFT,keyRIGHT,keyESC,keyESC2;
   let player;
   

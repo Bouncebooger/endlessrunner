@@ -5,9 +5,11 @@ class Menu extends Phaser.Scene {
       this.load.audio('sfx_bybird','assets/deathbybird.wav');
       this.load.audio('sfx_thud','assets/landingthud.wav');
       this.load.audio('sfx_splat','assets/splat02.wav');
+      this.load.audio('sfx_leaf','assets/leafjump.wav');
       this.load.audio('slugfallost','assets/SlugFallOST.wav');      
       this.load.image('playButton', 'assets/buttons/playButton.png');
       this.load.image('howToButton', 'assets/buttons/howButton.png');
+      this.load.image('backPlate', 'assets/backPlate.png');
    }
    constructor() {
       super("menuScene");
@@ -22,7 +24,7 @@ class Menu extends Phaser.Scene {
       this.button.setInteractive();
       this.howButton = this.add.image(game.canvas.width/2, game.canvas.height/1.9 + this.button.height*2, 'howToButton').setScale(1.5);
       this.howButton.setInteractive();
-      
+      this.add.image(game.canvas.width/2, game.canvas.height/3.5, 'backPlate')
       // title
       this.add.text(game.canvas.width/2, game.canvas.height/5.5, "Slug", {
          fontFamily: 'KarmaticArcade',

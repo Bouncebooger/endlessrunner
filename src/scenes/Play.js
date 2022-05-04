@@ -3,9 +3,9 @@ class Play extends Phaser.Scene {
 
     constructor () {
         super("playScene");
-        
+        this.speed = 0;
+        this.barFrame = 1;
     }
- 
     preload(){
         //this.matter.world.setBounds(true,true,false,false);
         this.load.image('ab', 'assets/WoodSides.png');
@@ -15,6 +15,9 @@ class Play extends Phaser.Scene {
         this.load.image('bg', 'assets/bg.png');
         this.load.image('slug', 'assets/Slug.png');
         this.load.image('leaf', 'assets/leaf.png');
+        this.load.spritesheet('bar', 'assets/velbar.png', {frameWidth: 61,
+        frameHeight: 243 
+        });
         this.load.multiatlas('anims', 'assets/anims.json', 'assets');
     }
     
@@ -24,7 +27,6 @@ class Play extends Phaser.Scene {
         //this.globalclock = new Clock("playScene");
         this.bird;
         this.webst;
-        this.speed = 0;
      //  this.wideweb = this.add.group();
         this.points = 0;
         var shapes = this.cache.json.get('shapes');
@@ -46,54 +48,55 @@ class Play extends Phaser.Scene {
         // player
         this.player = this.matter.add.sprite(game.canvas.width/2, 0, 'slug', null, 'shapes');
         
-        this.Warner = new velbar(this,0,0,'slug').setOrigin(0,0);
+        this.Warner = new velbar(this,0,0,'bar', 0).setOrigin(0,0);
         
         //platform
         this.plat = this.matter.add.image(200, 500, 'platA', null, {isStatic: true}).setScale(1,.75); 
-
+        this.plat.setAngle(20)
         this.leaf = this.matter.add.sprite(400, 800, 'anims', 'leaf_slidon-0.png', {isStatic: true}).setScale(0.75,0.75);
         //this.plat = this.matter.add.image(400, 500, 'leaf', null, {isStatic: true});
+        
+        
         let ScoreStyle = {
             fontFamily: 'KarmaticArcade',
+            fontSize: "30px",
+            align: 'right',
         }
-        this.plat.setAngle(20)
-        this.score = this.add.text(game.canvas.width/2, game.canvas.height/4, this.points, ScoreStyle);
+        this.score = this.add.text(game.canvas.width-200, 10, this.points, ScoreStyle);
+        
         this.player.setCollisionGroup(30).setCollidesWith(17);
         this.player.body.sleepThreshold = -1;        
+        this.exitTrigger = false;
+
+        this.events.on('resume', (scene, data)=> {
+            if (data){
+                this.webst = null;
+                this.scene.start('menuScene');
+            }
+        })
     }
 
     update(){
          
-        
+        //console.log(this.barFrame);
         if(Phaser.Input.Keyboard.JustDown(keyESC)){
-            console.log("pausaed");
-            
             this.scene.launch('PauseScreen');
-            console.log("sus");
-            //
             this.scene.pause();
             //this.scene.destroy('PauseScreen');
            // this.matter.world.resume();
             
             
         }
+        this.Warner.update();
+        this.Warner.setFrame(this.Warner.thisFrame);
         //this.scene.destroy('PauseScreen');
-        console.log("we are back");
         
         this.speed = this.player.body.velocity.y;
-        this.Warner.update();
         
         //this.P1.update();
         //console.log(this.player.body.velocity.y);
-        
-        this.points += this.player.body.velocity.y/100;
-        
-
-        
-        
-        
-        
-        
+        this.points += this.player.body.velocity.y/100;     
+                   
         if(!this.matter.overlap(this.plat.body, this.player.body)||this.plat.y<this.player.y){
             if (this.plat.y < -100){
                 this.destroyPlatform();
@@ -179,10 +182,6 @@ class Play extends Phaser.Scene {
 
     }
 
-    if(this.player.body.velocity.y >= 22 && this.matter.overlap(this.plat.body, this.player.body)){
-        this.webst= null;
-        this.scene.start('menuScene');
-    }
     
     // console.log(this.player.body.velocity.y)
     
@@ -198,7 +197,7 @@ class Play extends Phaser.Scene {
 }
     
     spawnbird(){
-        this.bird = new Predator(this,game.canvas.width/2,50,'anims','bird_sheet-0.png',this.speed).setScale(2,2);
+        this.bird = new Predator(this,game.canvas.width/2,50,'anims','bird_sheet-0.png',this.speed).setScale(1.75,1.75);
         this.plat.setAngle(Phaser.Math.Between(-15,15));
         this.bird.setIgnoreGravity(true);
         this.bird.body.sleepThreshold = -1; 

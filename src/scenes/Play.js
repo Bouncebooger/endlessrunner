@@ -78,6 +78,7 @@ class Play extends Phaser.Scene {
         this.events.on('resume', (scene, data)=> {
             if (data){
                 this.webst = null;
+                this.bgm.stop();
                 this.scene.start('menuScene');
             }
         })
@@ -103,8 +104,8 @@ update(){
         //this.P1.update();
         //console.log(this.player.body.velocity.y);
         this.points += (this.player.body.velocity.y/100)*(this.Warner.thisFrame+1);     
-        if(this.player.body.velocity.y>3){
-            this.lhc =true;
+        if(this.player.body.velocity.y>5){
+            this.lhc = true;
         }
         else{
             if(this.lhc){

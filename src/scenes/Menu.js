@@ -1,15 +1,13 @@
 class Menu extends Phaser.Scene {
    preload(){
-      this.load.spritesheet( 'button', 'assets/buttons/button_sprite_sheet.png', {
-         frameWidth: 193,
-         frameHeight: 71
-         });
       this.load.image('bg', 'assets/bg.png');
       this.load.audio('sfx_bird','assets/bird.wav');
       this.load.audio('sfx_bybird','assets/deathbybird.wav');
       this.load.audio('sfx_thud','assets/landingthud.wav');
       this.load.audio('sfx_splat','assets/splat02.wav');
-      this.load.audio('slugfallost','assets/SlugFallOST.wav');
+      this.load.audio('slugfallost','assets/SlugFallOST.wav');      
+      this.load.image('playButton', 'assets/buttons/playButton.png');
+      this.load.image('howToButton', 'assets/buttons/howButton.png');
    }
    constructor() {
       super("menuScene");
@@ -17,15 +15,24 @@ class Menu extends Phaser.Scene {
    
    create(){
       // background
-      this.background = this.add.tileSprite(0, 0, 300, 256, 'bg').setOrigin(0,0).setScale(3,3.5);
+      this.background = this.add.tileSprite(0, 0, 300, 256, 'bg').setOrigin(0,0).setScale(3,3.6);
       
       // button
-      this.button = this.add.image(game.canvas.width/2, game.canvas.height/2, 'button', 1);
+      this.button = this.add.image(game.canvas.width/2, game.canvas.height/1.9, 'playButton').setScale(1.5);
       this.button.setInteractive();
+      this.howButton = this.add.image(game.canvas.width/2, game.canvas.height/1.9 + this.button.height*2, 'howToButton').setScale(1.5);
+      this.howButton.setInteractive();
       
       // title
-      const title = this.add.text(game.canvas.width/2, game.canvas.height/4, "Slug Fall").setOrigin(0.5,0);
-      title.setFontSize(100);
+      this.add.text(game.canvas.width/2, game.canvas.height/5.5, "Slug", {
+         fontFamily: 'KarmaticArcade',
+         fontSize: '100px',
+         }).setOrigin(0.5,0);
+      this.add.text(game.canvas.width/2, game.canvas.height/3.3, "Fall", {
+         fontFamily: 'KarmaticArcade',
+         fontSize: '80px',
+         }).setOrigin(0.5,0);
+      //this.add.rectangle()
       this.start = false;
       
       
@@ -41,8 +48,8 @@ class Menu extends Phaser.Scene {
              top: 5,
              bototm: 5,
          },
-         stroke: '#000000',
-         strokeThickness: 5,
+         stroke: '#9F730B',
+         strokeThickness: 3,
          fixedWidth: 0
       }
       // setting the center of text
@@ -50,37 +57,27 @@ class Menu extends Phaser.Scene {
       let centerY = game.config.height/2;
       let textSpacer = 48;
 
-      // game instructions 
-      this.add.text(centerX, centerY + 2 * textSpacer, 'Move with the Arrow Keys (←)(→)', textConfig).setOrigin(0.5);
-      this.add.text(centerX, centerY + 3 * textSpacer, 'Keep your Velocity Out of the Danger Zone', textConfig).setOrigin(0.5);
-      // Goal
-      textConfig.color = '#FFFF66';
-      this.add.text(centerX, centerY + 4 * textSpacer, '>> Avoid the Bird <<', textConfig).setOrigin(0.5);
       // credits line
-      textConfig.color = '#5F9EA0';
-      textConfig.fontSize= '14px';
+      textConfig.color = '#FFEBAD';
+      textConfig.fontSize= '25px';
       this.add.text(centerX, centerY + 7 * textSpacer, 'Game by Skyler Haataja, Marlene Lopez, and Daniel Wild', textConfig).setOrigin(0.5);
-
-
-      
    }
    update(){
       if(this.start == true){
          this.scene.start('playScene');
          this.start = false;
       }
+      if(this.howStart == true){
+         this.scene.start('instructionScene');
+         this.howStart = false;
+      }
       this.background.tilePositionY += .2;
-      this.button.on("pointerover", () => {
-         this.button = this.add.image(game.canvas.width/2, game.canvas.height/2, 'button', 2);
-      });
-
-      this.button.on("pointerout", () => {
-         this.button = this.add.image(game.canvas.width/2, game.canvas.height/2, 'button', 1);
-      });
-
       this.button.on("pointerdown", () => {
-         this.button = this.add.image(game.canvas.width/2, game.canvas.height/2, 'button', 0);
          this.start = true;
+      });
+
+      this.howButton.on("pointerdown", () => {
+         this.howStart = true;
       });
       
       

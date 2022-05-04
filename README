@@ -7,12 +7,18 @@ Collaborators: Skyler Haataja, Marlene Lopez, Daniel Wild
 Game Title: Slug Fall
 Date Completed: 02 May 2022
 
-Link to GitHub repository:
-Playable link on GitHub pages:
+Link to GitHub repository:        https://github.com/Bouncebooger/endlessrunner
+Playable link on GitHub pages:    https://bouncebooger.github.io/endlessrunner/
 
 ---------------------------------
 
 <Creative Tilt Justification>
 Does your game...
-...do something technically interesting? Are you particularly proud of a programming technique you implemented? Did you look beyond the class examples and learn how to do something new? (5)
-...have a great visual style? Does it use music or art that you're particularly proud of? Are you trying something new or clever with the endless runner form? (5)
+...do something technically interesting? Are you particularly proud of a programming technique you implemented? Did you look beyond the class examples and learn how to do something new?
+
+...have a great visual style? Does it use music or art that you're particularly proud of? Are you trying something new or clever with the endless runner form?
+    In the game, the player is a slug falling down a tree in trying to avoid instant death. The hovering menacing threat is the bird predator trying to catch
+    a snack and the threat from below are the platforms. Depending on the velocity the slug is falling, it can splat on a branch by falling onto it at full speed.
+    The visual effects used to portray this are two death animations where when the player and predator collide the player is sliced in half while when the 
+    players falls on to a platform at full velocity then the player ruptures into a blob. It was the first time I made game art so I had fun trying to 
+    animate these sprites and visually portray how these objects look while in active use by the player (e.g. breaking spider webs to indicate collision and slow down).

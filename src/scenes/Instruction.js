@@ -4,7 +4,7 @@ class Instruction extends Phaser.Scene {
         this.load.image('bg', 'assets/bg.png');
         
         
-        //this.load.image('instructionSheet', 'assets/instructionSheet.png');
+        this.load.image('instructionSheet', 'assets/howto.png');
     }
     constructor(){
        super("instructionScene");

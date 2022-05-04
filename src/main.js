@@ -2,7 +2,7 @@ let config = {
     type: Phaser.CANVAS,
      width: 900,
     height: 900,
-  scene: [Menu,faPlay,Pause,DeathFall,Instruction],
+  scene: [Menu,Play,Pause,DeathFall,Instruction],
   physics: {
       default: 'matter',
       matter: {

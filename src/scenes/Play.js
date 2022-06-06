@@ -80,6 +80,7 @@ class Play extends Phaser.Scene {
                 this.webst = null;
                 this.bgm.stop();
                 this.scene.start('menuScene');
+                
             }
         })
     }
